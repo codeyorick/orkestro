@@ -1,19 +1,19 @@
-import type { Preview } from '@storybook/svelte'
+import type { Preview } from '@storybook/svelte';
 import '../src/app.css';
 
 const preview: Preview = {
-  parameters: {
-    controls: {
-      matchers: {
-       color: /(background|color)$/i,
-       date: /Date$/i,
-      },
-    },
+	parameters: {
+		controls: {
+			matchers: {
+				color: /(background|color)$/i,
+				date: /Date$/i
+			}
+		},
 
-    a11y: {
-      test: 'todo'
-    }
-  },
+		a11y: {
+			test: 'todo'
+		}
+	}
 };
 
 export default preview;

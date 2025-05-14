@@ -5,7 +5,7 @@ services:
     volumes:
       - .:/usr/src/app
     ports:
-      - "3002:5173"
+      - '3002:5173'
     command: sh -c "npm install && npx vite dev --host"
     environment:
-     - VITE_ALLOWED_HOSTS
+      - VITE_ALLOWED_HOSTS
