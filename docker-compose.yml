@@ -1,0 +1,11 @@
+services:
+  app:
+    image: node:22
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3002:5173"
+    command: sh -c "npm install && npx vite dev --host"
+    environment:
+     - VITE_ALLOWED_HOSTS
