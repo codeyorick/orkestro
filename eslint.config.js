@@ -1,3 +1,4 @@
+import prettier from 'eslint-config-prettier';
 import js from '@eslint/js';
 import { includeIgnoreFile } from '@eslint/compat';
 import svelte from 'eslint-plugin-svelte';
@@ -13,20 +14,16 @@ export default ts.config(
 	js.configs.recommended,
 	...ts.configs.recommended,
 	...svelte.configs.recommended,
+	prettier,
+	...svelte.configs.prettier,
 	{
 		languageOptions: {
 			globals: { ...globals.browser, ...globals.node }
 		},
-		rules: {
-			"no-undef": 'off'
-		}
+		rules: { 'no-undef': 'off' }
 	},
 	{
-		files: [
-			'**/*.svelte',
-			'**/*.svelte.ts',
-			'**/*.svelte.js'
-		],
+		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
 		languageOptions: {
 			parserOptions: {
 				projectService: true,
@@ -36,4 +33,4 @@ export default ts.config(
 			}
 		}
 	}
-)
+);
