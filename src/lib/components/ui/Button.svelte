@@ -1,7 +1,16 @@
 <script lang="ts">
-  import type { HTMLButtonAttributes } from "svelte/elements";
+    import type { Snippet } from "svelte";
 
-  let { children, ...rest }: HTMLButtonAttributes = $props()
+  interface Props {
+    /** The onclick event handler */
+    onClick?: () => void;
+    /** Content of the button */
+    children: Snippet;
+    /** Additional props*/
+    [key:string]: any;
+  }
+
+  let { children, style = 'neutral', ...rest }: Props = $props()
 </script>
 
 <button aria-label="button" {...rest} class={["btn", rest.class]}>
