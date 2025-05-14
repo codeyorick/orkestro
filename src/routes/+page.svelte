@@ -1,2 +1,10 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+  import { Button } from "$lib/components/ui";
+  import { goto } from "$app/navigation";
+
+  let { data } = $props()
+</script>
+
+<p>Logged in as {data.user?.name}</p>
+
+<Button onclick={() => goto("/logout")} class="btn-error">Logout</Button>

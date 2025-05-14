@@ -9,3 +9,5 @@ services:
     command: sh -c "npm install && npx vite dev --host"
     environment:
       - VITE_ALLOWED_HOSTS
+    env_file:
+      - .env
