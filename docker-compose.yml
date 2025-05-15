@@ -9,5 +9,6 @@ services:
     command: sh -c "npm install && npm run build && node build"
     environment:
       - PORT=${VITE_PORT}
+      - ORIGIN=${VITE_ORIGIN}
     env_file:
       - .env
