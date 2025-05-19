@@ -2,14 +2,13 @@
 	import { defineMeta } from '@storybook/addon-svelte-csf';
 	import Button from '$lib/components/ui/Button.svelte';
 	import { fn } from '@storybook/test';
-	import type { Snippet } from 'svelte';
 
 	const { Story } = defineMeta({
 		title: 'UI/Button',
 		component: Button,
 		tags: ['autodocs'],
 		args: {
-			children: 'Click me' as any,
+			children: 'Click me',
 			onclick: fn()
 		},
 		argTypes: {
@@ -21,7 +20,7 @@
 	});
 </script>
 
-{#snippet template(args: { children: Snippet; [key: string]: any })}
+{#snippet template(args)}
 	<Button {...args}>{args.children}</Button>
 {/snippet}
 
