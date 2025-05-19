@@ -13,7 +13,8 @@
 		"lint": "eslint . && prettier --check .",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"appwrite:init": "node --env-file=.env scripts/appwrite-init.js"
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "^3",
