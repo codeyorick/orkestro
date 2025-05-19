@@ -25,4 +25,5 @@
 	</form>
 	<div class="divider">of</div>
 	<Button onclick={() => oauth(OAuthProvider.Github)}>Login met GitHub</Button>
+	<Button onclick={() => oauth(OAuthProvider.Github)}>Login met Google</Button>
 </div>
