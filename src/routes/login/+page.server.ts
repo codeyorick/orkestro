@@ -23,7 +23,7 @@ export const actions: Actions = {
       return fail(400, { error });
     }
 
-    redirect(301, "/")
+    redirect(302, "/")
   },
 	oauth: async ({ request, locals, url }) => {
 		const formData = await request.formData()
