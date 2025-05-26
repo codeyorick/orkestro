@@ -13,12 +13,15 @@ export const GET: RequestHandler = async ({ url, locals, cookies }) => {
 
 	const session = await locals.admin.createSession(userId, secret);
 
-	cookies.set(COOKIE.APPWRITE, session.secret, {
-		sameSite: "strict",
-		expires: new Date(session.expire),
-		secure: true,
-		path: "/"
-	})
+	const headers = new Headers({
+		location: "/",
+		"set-cookie": event.cookies.serialize(COOKIE.APPWRITE, session.secret, {
+			sameSite: "strict",
+			expires: new Date(session.expire),
+			secure: true,
+			path: "/"
+		})
+	});
 
-	redirect(302, "/")
+	return new Response(null, { status: 302, headers });
 }
