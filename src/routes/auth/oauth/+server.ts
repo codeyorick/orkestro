@@ -15,7 +15,7 @@ export const GET: RequestHandler = async ({ url, locals, cookies }) => {
 
 	const headers = new Headers({
 		location: "/",
-		"set-cookie": event.cookies.serialize(COOKIE.APPWRITE, session.secret, {
+		"set-cookie": cookies.serialize(COOKIE.APPWRITE, session.secret, {
 			sameSite: "strict",
 			expires: new Date(session.expire),
 			secure: true,
