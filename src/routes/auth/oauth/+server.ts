@@ -12,16 +12,18 @@ export const GET: RequestHandler = async ({ url, locals, cookies }) => {
 	}
 
 	const session = await locals.admin.createSession(userId, secret);
-
-	const headers = new Headers({
-		location: "/",
-		"set-cookie": cookies.serialize(COOKIE.APPWRITE, session.secret, {
-			sameSite: "strict",
-			expires: new Date(session.expire),
-			secure: true,
-			path: "/"
-		})
+	
+	cookies.set(COOKIE.APPWRITE, session.secret, {
+		sameSite: "strict",
+		expires: new Date(session.expire),
+		secure: true,
+		path: "/"
+	})
+	
+	return new Response(null, {
+		status: 200,
+		headers: {
+			"Refresh": "0; url=/"
+		}
 	});
-
-	return new Response(null, { status: 302, headers });
 }
