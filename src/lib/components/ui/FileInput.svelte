@@ -43,7 +43,7 @@
 	<input bind:files type="file" class="file-input" {multiple} {...rest} />
 	{#if files && multiple}
 		<div class="list mt-6">
-			{#each files as file}
+			{#each files as file (file)}
 				<div class="list-row text-center">
 					{file.name}
 				</div>
