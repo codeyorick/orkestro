@@ -1,11 +1,17 @@
-import type { AppwriteServerAdmin } from "$lib/server/appwrite/admin/client";
-import type { AppwriteServer } from "$lib/server/appwrite/client";
+import type { Session, SupabaseClient, User } from '@supabase/supabase-js';
+import type { Database } from './database.types.ts';
 
 declare global {
 	namespace App {
 		interface Locals {
-			aw: AppwriteServer
-			admin: AppwriteServerAdmin
+			supabase: SupabaseClient<Database>;
+			safeGetSession: () => Promise<{ session: Session | null; user: User | null }>;
+			session: Session | null;
+			user: User | null;
+		}
+
+		interface PageData {
+			session: Session | null;
 		}
 	}
 }
