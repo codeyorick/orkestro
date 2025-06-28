@@ -1,17 +1,18 @@
-import type { LayoutServerLoad } from "./$types";
-import { redirect } from "@sveltejs/kit";
+import type { LayoutServerLoad } from './$types';
+import { redirect } from '@sveltejs/kit';
 
-export const load: LayoutServerLoad = async ({ cookies, locals, url }) => {
-  const user = await locals.aw.getUser()
+export const load: LayoutServerLoad = async ({ cookies, locals: { safeGetSession }, url }) => {
+	const { session, user } = await safeGetSession();
 
-  if (user) {
-    if (url.pathname === "/login") redirect(302, "/")
-  } else {
-    if (url.pathname !== "/login") redirect(302, "/login")
-  }
+	if (user) {
+		if (url.pathname === '/login') redirect(302, '/');
+	} else {
+		if (url.pathname !== '/login') redirect(302, '/login');
+	}
 
-  return {
-    cookies: cookies.getAll(),
-    user
-  }
-}
+	return {
+		session,
+		user,
+		cookies: cookies.getAll()
+	};
+};

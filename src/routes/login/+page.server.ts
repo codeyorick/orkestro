@@ -1,43 +1,47 @@
 import type { Actions } from "./$types";
 import { fail, redirect } from "@sveltejs/kit";
-import { OAuthProvider } from 'appwrite';
-import { COOKIE } from "$lib/constants";
+import type { Provider } from '@supabase/supabase-js';
+
 
 export const actions: Actions = {
-  login: async ({ request, locals, cookies }) => {
-    const formData = await request.formData()
-    const email = formData.get("email") as string
-    const password = formData.get("password") as string
+	login: async ({ request, locals }) => {
+		const formData = await request.formData();
+		const email = formData.get('email') as string;
 
-    try {
-      const session = await locals.admin.login(email, password)
+		if (!/^[\w-.+]+@([\w-]+\.)+[\w-]{2,8}$/.test(email)) {
+			return fail(422, { error: 'Please enter a valid email address' });
+		}
+		const password = formData.get('password') as string;
 
-      cookies.set(COOKIE.APPWRITE, session.secret, {
-        sameSite: "strict",
-        path: "/",
-        expires: new Date(session.expire),
-        secure: true,
-        httpOnly: false
-      })
-    } catch (error) {
-      return fail(400, { error });
-    }
+		const { error } = await locals.supabase.auth.signInWithPassword({ email, password });
 
-    redirect(302, "/")
-  },
-	oauth: async ({ request, locals, url }) => {
-		const formData = await request.formData()
-		const provider = formData.get("provider") as string | null
+		if (error) {
+			return fail(422, {
+				error: `Invalid credentials.`
+			});
+		}
+
+		redirect(302, '/');
+	},
+	oauth: async ({ request, locals, url: { origin } }) => {
+		const formData = await request.formData();
+		const provider = formData.get('provider') as Provider | null;
 
 		if (provider) {
-			const redirectUrl = await locals.admin.oauth(provider as OAuthProvider, {
-				success: `${url.origin}/auth/oauth`,
-				failure: `${url.origin}/login`
-			})
+			const {
+				data: { url }
+			} = await locals.supabase.auth.signInWithOAuth({
+				provider,
+				options: { redirectTo: `${origin}/auth/oauth` }
+			});
 
-			redirect(302, redirectUrl)
+			if (!url) {
+				return fail(400, { message: 'Fault during OAuth login. Please contact support.' });
+			}
+
+			redirect(302, url);
 		} else {
-			return fail(400, { message: "Invalid provider" })
+			return fail(400, { message: 'Invalid provider' });
 		}
 	}
-}
+};

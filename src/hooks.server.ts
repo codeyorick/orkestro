@@ -1,18 +1,46 @@
-import type { Handle, ServerInit } from "@sveltejs/kit";
-import { PUBLIC_APPWRITE_ENDPOINT, PUBLIC_APPWRITE_PROJECT } from "$env/static/public"
-import { APPWRITE_KEY } from "$env/static/private";
-import { AppwriteServerAdmin } from "$lib/server/appwrite/admin/client";
-import { AppwriteServer } from "$lib/server/appwrite/client";
+import { createServerClient } from '@supabase/ssr';
+import { type Handle } from '@sveltejs/kit';
 
-export const init: ServerInit = async () => {
-  if (!PUBLIC_APPWRITE_ENDPOINT || !PUBLIC_APPWRITE_PROJECT || !APPWRITE_KEY) {
-    throw new Error("Missing Appwrite environment variables")
-  }
-}
+import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 
-export const handle: Handle = async ({ resolve, event }) => {
-  event.locals.admin = new AppwriteServerAdmin();
-  event.locals.aw = new AppwriteServer(event.cookies)
+export const handle: Handle = async ({ event, resolve }) => {
+	event.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+		cookies: {
+			getAll: () => event.cookies.getAll(),
+			setAll: (cookiesToSet) => {
+				cookiesToSet.forEach(({ name, value, options }) => {
+					event.cookies.set(name, value, { ...options, path: '/' });
+				});
+			}
+		}
+	});
 
-  return resolve(event);
-}
+	event.locals.safeGetSession = async () => {
+		const {
+			data: { session }
+		} = await event.locals.supabase.auth.getSession();
+		if (!session) {
+			return { session: null, user: null };
+		}
+
+		const {
+			data: { user },
+			error
+		} = await event.locals.supabase.auth.getUser();
+		if (error) {
+			return { session: null, user: null };
+		}
+
+		return { session, user };
+	};
+
+	return resolve(event, {
+		filterSerializedResponseHeaders(name) {
+			/**
+			 * Supabase libraries use the `content-range` and `x-supabase-api-version`
+			 * headers, so we need to tell SvelteKit to pass it through.
+			 */
+			return name === 'content-range' || name === 'x-supabase-api-version';
+		}
+	});
+};

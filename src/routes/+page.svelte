@@ -1,10 +1,11 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui";
-  import { goto } from "$app/navigation";
 
   let { data } = $props()
 </script>
 
-<p>Logged in as {data.user?.name}</p>
+<p>Logged in as {data.user?.email}</p>
 
-<Button onclick={() => goto("/logout")} class="btn-error">Logout</Button>
+<form action="/logout" method="GET">
+  <Button type="submit" class="btn-error">Logout</Button>
+</form>

@@ -1,29 +1,14 @@
-import { redirect, type RequestHandler } from '@sveltejs/kit';
-import { COOKIE } from '$lib/constants';
+import { fail, redirect, type RequestHandler } from '@sveltejs/kit';
 
-export const GET: RequestHandler = async ({ url, locals, cookies }) => {
-	const userId = url.searchParams.get("userId");
-	const secret = url.searchParams.get("secret");
+export const GET: RequestHandler = async ({ url, locals }) => {
+	const code = url.searchParams.get('code') as string;
 
-	if (!userId || !secret) {
-		return new Response("Missing `userId` or `secret` query parameters", {
-			status: 400
-		})
+	if (code) {
+		const { error } = await locals.supabase.auth.exchangeCodeForSession(code);
+		if (!error) {
+			throw redirect(303, `/`);
+		}
 	}
 
-	const session = await locals.admin.createSession(userId, secret);
-	
-	cookies.set(COOKIE.APPWRITE, session.secret, {
-		sameSite: "strict",
-		expires: new Date(session.expire),
-		secure: true,
-		path: "/"
-	})
-	
-	return new Response(null, {
-		status: 200,
-		headers: {
-			"Refresh": "0; url=/"
-		}
-	});
-}
+	throw fail(502);
+};
