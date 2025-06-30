@@ -13,7 +13,9 @@
 		"lint": "eslint . && prettier --check .",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"db:reset": "bash scripts/supabase-db.sh reset",
+		"db:push": "bash scripts/supabase-db.sh push"
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "^3",
@@ -44,6 +46,7 @@
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
 		"storybook": "^8.6.12",
+		"supabase": "^2.26.9",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"tailwindcss": "^4.0.0",
