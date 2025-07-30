@@ -1,6 +1,6 @@
 # Orkestro
 
-A music score manager and distributor for orchestra's.
+A music score manager and distributor for orchestras.
 
 ## Developing
 
