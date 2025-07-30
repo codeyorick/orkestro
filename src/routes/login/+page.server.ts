@@ -9,16 +9,14 @@ export const actions: Actions = {
 		const email = formData.get('email') as string;
 
 		if (!/^[\w-.+]+@([\w-]+\.)+[\w-]{2,8}$/.test(email)) {
-			return fail(422, { error: 'Please enter a valid email address' });
+			return fail(422, { error: 'Ongeldig e-mailadres'});
 		}
 		const password = formData.get('password') as string;
 
 		const { error } = await locals.supabase.auth.signInWithPassword({ email, password });
 
 		if (error) {
-			return fail(422, {
-				error: `Invalid credentials.`
-			});
+			return fail(422, {error: `Ongeldige gebruikersnaam en/of wachtwoord`});
 		}
 
 		redirect(302, '/');

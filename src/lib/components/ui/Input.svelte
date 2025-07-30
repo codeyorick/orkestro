@@ -3,16 +3,16 @@
 
 	interface Props extends HTMLInputAttributes {
 		label?: string;
+		containerClass?: string;
+		value?: string;
 	}
 
-	let { label, ...rest }: Props = $props();
-
-	const uid = $props.id();
+	let { label, containerClass, value = $bindable(), ...rest }: Props = $props();
 </script>
 
-{#if label}
-	<label class="label" for={uid}>{label}</label>
-	<input {...rest} id={uid} placeholder={rest.placeholder ?? label} class={['input', rest.class]} />
-{:else}
-	<input {...rest} class={['input', rest.class]} />
-{/if}
+<fieldset class={['fieldset', containerClass]}>
+	{#if label}
+		<legend class="fieldset-legend text-sm">{label}</legend>
+	{/if}
+	<input {...rest} placeholder={rest.placeholder ?? label} class={['input', rest.class]} bind:value />
+</fieldset>

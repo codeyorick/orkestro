@@ -1,2 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap");
 @import "tailwindcss";
+
 @plugin "daisyui";
+
+@plugin "daisyui/theme" {
+    default: true;
+    prefersdark: true;
+    --color-primary: oklch(68% 0.169 237.323);
+    --color-primary-content: oklch(97% 0.013 236.62);
+}
+
+@theme {
+    --font-heading: "Fredoka", sans-serif;
+}
