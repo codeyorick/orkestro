@@ -21,7 +21,7 @@
 </script>
 
 <div class="flex flex-grow items-center bg-base-300">
-	<div class="card mx-auto max-w-4xl shadow-md my-4">
+	<div class="card mx-auto max-w-4xl shadow-md md:my-4">
 		<div class="grid md:grid-cols-2 grid-cols-1 bg-base-200 md:rounded-lg">
 
 			<div class="py-20 px-16 relative">
