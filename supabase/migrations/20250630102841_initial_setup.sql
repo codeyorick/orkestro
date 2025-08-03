@@ -188,7 +188,7 @@ select using (orchestra_id in (
 create
 policy "Give users access to their own data only" on "public"."user_orchestra_instruments"
     for
-select using (auth.uid() = user_id);
+select using ((select auth.uid()) = user_id);
 
 create
 policy "Restrict access to access to concert" on "public"."pieces"
@@ -227,8 +227,8 @@ select using (id in (
 
 create
 policy "Give users access to their own data only" on "public"."user_settings"
-    using (auth.uid() = user_id)
-    with check (auth.uid() = user_id);
+    using ((select auth.uid()) = user_id)
+    with check ((select auth.uid()) = user_id);
 
 create
 policy "Restrict access to public" on "public"."user_settings"
