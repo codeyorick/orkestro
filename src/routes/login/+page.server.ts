@@ -19,7 +19,7 @@ export const actions: Actions = {
 			return fail(422, {error: `Ongeldige gebruikersnaam en/of wachtwoord`});
 		}
 
-		redirect(302, '/');
+		redirect(303, '/');
 	},
 	oauth: async ({ request, locals, url: { origin } }) => {
 		const formData = await request.formData();
@@ -37,7 +37,7 @@ export const actions: Actions = {
 				return fail(400, { message: 'Fault during OAuth login. Please contact support.' });
 			}
 
-			redirect(302, url);
+			redirect(303, url);
 		} else {
 			return fail(400, { message: 'Invalid provider' });
 		}

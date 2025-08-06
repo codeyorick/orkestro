@@ -4,5 +4,5 @@ import { redirect } from "@sveltejs/kit";
 export const load: PageServerLoad = async ({ locals }) => {
 	await locals.supabase.auth.signOut();
 
-	redirect(302, '/login');
+	redirect(303, '/login');
 };
