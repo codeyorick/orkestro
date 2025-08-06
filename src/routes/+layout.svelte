@@ -18,5 +18,11 @@
 </script>
 
 <div class="flex flex-col min-h-screen">
-	{@render children()}
+	<svelte:boundary>
+		{#snippet pending()}
+			<p>Loading...</p>
+		{/snippet}
+
+		{@render children()}
+	</svelte:boundary>
 </div>
