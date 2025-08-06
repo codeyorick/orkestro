@@ -1,23 +1,12 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { Button, Heading, Input } from '$lib/components/ui';
-	import type { SubmitFunction } from '@sveltejs/kit';
-
-	let { form } = $props();
+	import { login, oauth } from '$lib/remote/auth.remote';
 
 	let loading = $state(false);
 	let loadingOauth = $state({
 		github: false,
 		google: false,
 	});
-
-	const handleEnhance: SubmitFunction = () => {
-		loading = true;
-		return async ({ update }) => {
-			await update();
-			loading = false;
-		};
-	};
 </script>
 
 <div class="flex flex-grow items-center bg-base-300">
@@ -39,22 +28,26 @@
 
 			<div class="py-20 px-16 bg-base-100 md:rounded-r-lg border-l border-base-300">
 				<Heading level="2" class="text-center mb-6">Inloggen</Heading>
-				<form action="?/login" method="POST" use:enhance={handleEnhance}>
+				<form {...login.enhance(async ({ submit }) => {
+					loading = true
+					await submit()
+					loading = false
+				})}>
 					<Input type="email" name="email" label="E-mailadres" required class="w-full" />
 					<Input type="password" name="password" label="Wachtwoord" required class="w-full" />
-					{#if (form?.error)}
+					{#if login.result}
 						<div class="alert alert-soft alert-error mt-2">
-							{form?.error}
+							{login.result.error}
 						</div>
 					{/if}
 					<Button type="submit" class="w-full mt-4 btn-primary" bind:loading>Inloggen</Button>
 				</form>
 				<div class="divider my-8">of</div>
-				<form action="?/oauth" method="POST" onsubmit={() =>loadingOauth.github = true}>
+				<form {...oauth} onsubmit={() => loadingOauth.github = true}>
 					<input type="hidden" name="provider" value="github">
 					<Button type="submit" class="w-full mb-4" bind:loading={loadingOauth.github}>Inloggen met GitHub</Button>
 				</form>
-				<form action="?/oauth" method="POST" onsubmit={() =>loadingOauth.google = true}>
+				<form {...oauth} onsubmit={() => loadingOauth.google = true}>
 					<input type="hidden" name="provider" value="google">
 					<Button type="submit" class="w-full" bind:loading={loadingOauth.google}>Inloggen met Google</Button>
 				</form>
