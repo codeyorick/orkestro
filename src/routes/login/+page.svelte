@@ -1,13 +1,24 @@
 <script lang="ts">
 	import { Button, Heading, Input } from '$lib/components/ui';
 	import { login, oauth } from '$lib/remote/auth.remote';
+	import type { Provider } from '@supabase/supabase-js';
 
 	let loading = $state(false);
-	let loadingOauth = $state({
-		github: false,
-		google: false,
-	});
+	let loadingOauth: { [key in Provider]: boolean } = $state({});
 </script>
+
+{#snippet oauthForm(provider: Provider, label: string)}
+	{@const form = oauth.for(provider)}
+	<form {...form} onsubmit={() => loadingOauth[provider] = true}>
+		<input type="hidden" name="provider" value={provider}>
+		<Button type="submit" class="w-full mb-4" bind:loading={loadingOauth[provider]}>Inloggen met {label}</Button>
+	</form>
+	{#if form.result}
+		<div class="alert alert-soft alert-error mt-2">
+			{form.result.error}
+		</div>
+	{/if}
+{/snippet}
 
 <div class="flex flex-grow items-center bg-base-300">
 	<div class="card mx-auto max-w-4xl shadow-md md:my-4">
@@ -43,14 +54,8 @@
 					<Button type="submit" class="w-full mt-4 btn-primary" bind:loading>Inloggen</Button>
 				</form>
 				<div class="divider my-8">of</div>
-				<form {...oauth} onsubmit={() => loadingOauth.github = true}>
-					<input type="hidden" name="provider" value="github">
-					<Button type="submit" class="w-full mb-4" bind:loading={loadingOauth.github}>Inloggen met GitHub</Button>
-				</form>
-				<form {...oauth} onsubmit={() => loadingOauth.google = true}>
-					<input type="hidden" name="provider" value="google">
-					<Button type="submit" class="w-full" bind:loading={loadingOauth.google}>Inloggen met Google</Button>
-				</form>
+				{@render oauthForm("github", "GitHub")}
+				{@render oauthForm("google", "Google")}
 			</div>
 
 			<div class="md:hidden max-w-xs mx-auto text-center text-xs text-base-content/50 p-4">

@@ -1,6 +1,6 @@
 import { form, getRequestEvent } from '$app/server';
-import { fail, redirect } from '@sveltejs/kit';
-import type { Provider } from '@supabase/supabase-js';
+import { redirect } from '@sveltejs/kit';
+import { isValidProvider } from '$lib/utils/auth';
 
 export const login = form(async data => {
 	const { locals } = getRequestEvent()
@@ -24,22 +24,26 @@ export const login = form(async data => {
 export const oauth = form(async data => {
 	const { locals, url: { origin } } = getRequestEvent()
 
-	const provider = data.get('provider') as Provider | null;
+	const provider = data.get('provider') as string | null;
 
-	if (provider) {
+	if (provider && isValidProvider(provider)) {
 		const {
-			data: { url }
+			data: { url },
+			error
 		} = await locals.supabase.auth.signInWithOAuth({
 			provider,
 			options: { redirectTo: `${origin}/auth/oauth` }
-		});
+		})
 
+		if (error) {
+			return { error: error.message };
+		}
 		if (!url) {
-			return fail(400, { message: 'Fault during OAuth login. Please contact support.' });
+			return { error: 'Fault during OAuth login. Please contact support.' };
 		}
 
 		redirect(303, url);
 	} else {
-		return fail(400, { message: 'Invalid provider' });
+		return { error: 'Invalid provider' };
 	}
 })

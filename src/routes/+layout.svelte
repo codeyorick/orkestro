@@ -17,12 +17,14 @@
 	})
 </script>
 
-<div class="flex flex-col min-h-screen">
-	<svelte:boundary>
-		{#snippet pending()}
-			<p>Loading...</p>
-		{/snippet}
+<svelte:boundary>
+	{#snippet pending()}
+		<div class="h-full flex items-center justify-center">
+			<span class="loading loading-spinner loading-xl"></span>
+		</div>
+	{/snippet}
 
+	<main class="overflow-y-auto h-full">
 		{@render children()}
-	</svelte:boundary>
-</div>
+	</main>
+</svelte:boundary>

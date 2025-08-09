@@ -13,3 +13,7 @@
 @theme {
     --font-heading: "Fredoka", sans-serif;
 }
+
+html, body {
+    @apply h-full overflow-hidden;
+}
