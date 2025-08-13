@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { Button } from "$lib/components/ui";
+  import { Button } from "$lib/components/ui/button";
 
   let { data } = $props()
 </script>
 
-<p>Logged in as {data.session?.user.email}</p>
+<p>Ingelogd als {data.session?.user.email}</p>
 
 <form action="/logout" method="GET">
-  <Button type="submit" class="btn-error">Logout</Button>
+  <Button type="submit">Uitloggen</Button>
 </form>
