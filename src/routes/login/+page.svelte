@@ -25,12 +25,12 @@
 	<form {...form} onsubmit={() => loadingOauth[provider] = true}>
 		<input type="hidden" name="provider" value={provider}>
 		<Button type="submit" variant="outline" class="w-full">
-			<span>
-				<img src={`/images/oauth-providers/${provider}.svg`} alt="" class="mr-2 h-4 w-4"/>
-			</span>
 			{#if (loadingOauth[provider] ?? false)}
 				<Spinner />
 			{:else}
+				<span>
+					<img src={`/images/oauth-providers/${provider}.svg`} alt="" class="mr-2 h-4 w-4"/>
+				</span>
 				Inloggen met {getProviderDisplayName(provider)}
 			{/if}
 		</Button>
