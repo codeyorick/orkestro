@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Provider } from '@supabase/supabase-js';
+	import { getProviderDisplayName } from '$lib/utils/auth';
 
 	import { Alert, AlertDescription } from '$lib/components/ui/alert';
 	import { Button } from '$lib/components/ui/button';
@@ -19,15 +20,18 @@
 
 </script>
 
-{#snippet oauthForm(provider: Provider, label: string)}
+{#snippet oauthForm(provider: Provider)}
 	{@const form = oauth.for(provider)}
 	<form {...form} onsubmit={() => loadingOauth[provider] = true}>
 		<input type="hidden" name="provider" value={provider}>
 		<Button type="submit" variant="outline" class="w-full">
+			<span>
+				<img src={`/images/oauth-providers/${provider}.svg`} alt="" class="mr-2 h-4 w-4"/>
+			</span>
 			{#if (loadingOauth[provider] ?? false)}
 				<Spinner />
 			{:else}
-				Inloggen met {label}
+				Inloggen met {getProviderDisplayName(provider)}
 			{/if}
 		</Button>
 	</form>
@@ -39,7 +43,7 @@
 	{/if}
 {/snippet}
 
-<div class="bg-muted min-h-svh flex flex-col items-center justify-center gap-6 p-6 md:p-10">
+<div class="bg-muted min-h-svh flex flex-col items-center justify-center gap-6 p-6 md:p-10 relative">
 	<div class="w-full max-w-sm md:max-w-3xl">
 		<div class="flex flex-col gap-6">
 			<Card class="overflow-hidden p-0">
@@ -120,7 +124,7 @@
 						<img
 							alt=""
 							class="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-							src="/login-background.svg"
+							src="/images/login-background.svg"
 						/>
 					</div>
 				</CardContent>
