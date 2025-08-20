@@ -88,12 +88,7 @@
 				<div class="grid gap-3">
 					<div class="flex items-center">
 						<Label for="password-{id}">Wachtwoord</Label>
-						<a
-							class="ml-auto text-sm underline-offset-4 hover:underline"
-							href="##"
-						>
-							Wachtwoord vergeten?
-						</a>
+						<Button class="ml-auto px-0" href="/auth/password-reset" variant="link">Wachtwoord vergeten?</Button>
 					</div>
 					<Input id="password-{id}" name="password" placeholder="Wachtwoord" required type="password" />
 				</div>

@@ -33,7 +33,7 @@
 		"playwright": "^1.52.0",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
-		"supabase": "^2.33.9",
+		"supabase": "^2.34.3",
 		"svelte": "^5.37.3",
 		"svelte-check": "^4.0.0",
 		"tailwind-merge": "^3.3.1",
