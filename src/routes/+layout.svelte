@@ -3,6 +3,7 @@
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { ModeWatcher } from 'mode-watcher';
+	import { Spinner } from '$lib/components/ui/spinner/index.js';
 
 	let { data, children } = $props();
 	let { session, supabase } = $derived(data);
@@ -18,15 +19,16 @@
 	})
 </script>
 
-<svelte:boundary>
-	<ModeWatcher/>
-	{#snippet pending()}
-		<div class="h-full flex items-center justify-center">
-			<span class="loading loading-spinner loading-xl"></span>
-		</div>
-	{/snippet}
+<ModeWatcher/>
 
+<svelte:boundary>
 	<main class="overflow-y-auto h-full">
 		{@render children()}
 	</main>
+
+	{#snippet pending()}
+		<div class="h-screen flex items-center justify-center">
+			<Spinner size="lg"/>
+		</div>
+	{/snippet}
 </svelte:boundary>
