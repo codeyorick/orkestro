@@ -1,6 +1,6 @@
 <img width="275" height="240" alt="logo" src="https://github.com/user-attachments/assets/ddc88c53-a1e0-48d3-99cc-46b55755c585" />
 
-# Orkestro
+# ScoreFlow
 
 A music score manager and distributor for orchestras.
 
