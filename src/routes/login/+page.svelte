@@ -57,8 +57,8 @@
 							</div>
 
 							<div class="flex flex-col gap-4">
-								{@render oauthForm('github', 'GitHub')}
-								{@render oauthForm('google', 'Google')}
+								{@render oauthForm('github')}
+								{@render oauthForm('google')}
 							</div>
 
 							<div
