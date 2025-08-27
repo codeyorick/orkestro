@@ -7,7 +7,7 @@ permissions:
   pull-requests: write
 
 jobs:
-    demo:
+    svelte-check:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
