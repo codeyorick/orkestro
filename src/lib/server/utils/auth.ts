@@ -3,7 +3,7 @@ import { redirect } from '@sveltejs/kit';
 
 export async function requireAdmin(supabase: SupabaseClient, user: User | null) {
 	if (!user) {
-		redirect(303, '/auth/login');
+		redirect(303, '/');
 	}
 
 	const { count, error } = await supabase
@@ -16,6 +16,6 @@ export async function requireAdmin(supabase: SupabaseClient, user: User | null) 
 	}
 
 	if (count === null || count === 0) {
-		redirect(303, '/auth/login');
+		redirect(303, '/');
 	}
 }
